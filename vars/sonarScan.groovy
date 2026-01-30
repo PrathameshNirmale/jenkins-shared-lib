@@ -1,7 +1,16 @@
-def call(Map cfg = [:]) {
-  // --- Required input ---
-  def projectKey = cfg.projectKey
-  if (!projectKey) { error "sonarScan: 'projectKey' is required" }
+def call(Map config = [:]) {
+
+    def projectKey  = config.projectKey ?: error("projectKey is required")
+    def projectName = config.projectName ?: projectKey
+    def sources     = config.sources ?: '.'
+
+    sh """
+        sonar-scanner \
+          -Dsonar.projectKey=${projectKey} \
+          -Dsonar.projectName=${projectName} \
+          -Dsonar.sources=${sources}
+    """
+}
 
   // --- Simple inputs with sane defaults ---
   def serverName     = cfg.server        ?: 'sonar'          // Jenkins > System > SonarQube servers (Name)
