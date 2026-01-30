@@ -1,6 +1,8 @@
 import org.example.Helper
 
 def call(String name = 'there') {
-    def upper = Helper.toUpper(name)
-    echo "Hello ${upper}!" 
+    // Pass 'this' so the helper can access Jenkins DSL steps
+    def greeting = Helper.readGreeting(this) 
+    def upperName = Helper.toUpper(name)
+    echo "${greeting} ${upperName}!"
 }
