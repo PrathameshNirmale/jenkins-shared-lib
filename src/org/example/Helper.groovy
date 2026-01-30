@@ -1,13 +1,8 @@
-package org.example
+import org.example.Helper
 
-class Helper {
-    static String toUpper(String name) {
-        def n = name ?: 'there'
-        return n.toUpperCase()
-    }
-
-    // Pass 'steps' or 'script' as an argument
-    static String readGreeting(def steps) {
-        return steps.libraryResource('org/example/greeting.txt').trim()
-    }
+def call(String name = 'there') {
+    // Pass 'this' so the helper can access Jenkins DSL steps
+    def greeting = Helper.readGreeting(this) 
+    def upperName = Helper.toUpper(name)
+    echo "${greeting} ${upperName}!"
 }
